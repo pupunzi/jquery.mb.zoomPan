@@ -83,12 +83,19 @@
 
             //todo: Add height conditioning
             //first verify width and height, than add css
-            
+            var ratio;
             if(w<el.opt.cWidth){
-                var ratio = el.opt.cWidth/w;
+                ratio = el.opt.cWidth/w;
                 w=el.opt.cWidth;
                 h = h*ratio;
             }
+
+            if(h<el.opt.cHeight){
+                ratio = el.opt.cHeight/h;
+                w=w*ratio;
+                h = el.opt.cHeight;
+            }
+
 
             var t= - Math.random()*((h-el.opt.cHeight));
             var l= - Math.random()*((w-el.opt.cWidth));
