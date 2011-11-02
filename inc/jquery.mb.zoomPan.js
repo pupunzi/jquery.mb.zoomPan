@@ -43,6 +43,11 @@
 
 
         $el.load(function(){
+
+          if(el.opt.isInit) return;
+
+          el.opt.isInit=true;
+
           if($el.width()<el.opt.cWidth){
             var ratio = el.opt.cWidth/$el.width();
             $el.css({width:el.opt.cWidth,height: $el.height()*ratio});
@@ -61,7 +66,7 @@
 
           $el.show().css({width:$el.width()*el.opt.startScale,height:$el.height()*el.opt.startScale, top:0, left:0});
 
-          var imgWrapper=$("<div/>").css({overflow:"hidden", width:el.opt.cWidth,height:el.opt.cHeight, position:"static", display:el.opt.display, margin:0});
+          var imgWrapper=$("<div/>").addClass("zoomPanWrapper").css({overflow:"hidden", width:el.opt.cWidth,height:el.opt.cHeight, position:"static", display:el.opt.display, margin:0});
           $el.css({position:"static"}).wrap(imgWrapper);
 
           $el.imagePanAnimate();
