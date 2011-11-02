@@ -18,155 +18,160 @@
 
 (function($) {
 
-  $.zoomPan={
-    name:"mb.zoomPan",
-    author:"Matteo Bicocchi",
-    version:"1.0",
+    $.zoomPan={
+        name:"mb.zoomPan",
+        author:"Matteo Bicocchi",
+        version:"1.0",
 
-    defaults:{
-      startScale:random(1,1.5),
-      minScale:1,
-      maxScale:2,
-      cWidth:900,
-      cHeight:900,
-      velocity:[12000,14000],
-      type:"linear",
-      display:"block"
-    },
+        defaults:{
+            startScale:random(1,1.5),
+            minScale:1,
+            maxScale:2,
+            cWidth:900,
+            cHeight:900,
+            velocity:[12000,14000],
+            type:"linear",
+            display:"block"
+        },
 
-    init:function(opt){
-      return this.each(function(){
+        init:function(opt){
+            return this.each(function(){
 
-        var $el=$(this);
-        var el=$el.get(0);
-        el.opt=$.extend({},$.zoomPan.defaults,opt);
-
-
-        $el.load(function(){
-
-          if(el.opt.isInit) return;
-
-          el.opt.isInit=true;
-
-          if($el.width()<el.opt.cWidth){
-            var ratio = el.opt.cWidth/$el.width();
-            $el.css({width:el.opt.cWidth,height: $el.height()*ratio});
-          }
-
-          el.opt.oWidth=$el.width();
-          el.opt.oHeight=$el.height();
-
-          el.opt.cWidth=el.opt.cWidth?el.opt.cWidth:el.opt.oWidth;
-          el.opt.cHeight=el.opt.cHeight?el.opt.cHeight:el.opt.oHeight;
-
-          el.opt.cWidth=$el.data("width")?$el.data("width"):el.opt.cWidth;
-          el.opt.cHeight=$el.data("height")?$el.data("height"):el.opt.cHeight;
-
-          el.opt.maxScale=el.opt.maxScale-el.opt.minScale;
-
-          $el.show().css({width:$el.width()*el.opt.startScale,height:$el.height()*el.opt.startScale, top:0, left:0});
-
-          var imgWrapper=$("<div/>").addClass("zoomPanWrapper").css({overflow:"hidden", width:el.opt.cWidth,height:el.opt.cHeight, position:"static", display:el.opt.display, margin:0});
-          $el.css({position:"static"}).wrap(imgWrapper);
-
-          $el.imagePanAnimate();
-        }).attr("src",$el.attr("src")+"?_="+new Date().getTime()).css({opacity:0}).hide();
-      })
-    },
-
-    animate:function(){
-      var $el=this;
-      var el=$el.get(0);
-
-      var scale = el.opt.minScale + (Math.random() * el.opt.maxScale);
-
-      var w=Math.round(el.opt.oWidth*scale);
-      var h=Math.round(el.opt.oHeight*scale);
-
-      var ratio;
-      if(w<el.opt.cWidth){
-        ratio = el.opt.cWidth/w;
-        w=el.opt.cWidth;
-        h = h*ratio;
-      }
-
-      if(h<el.opt.cHeight){
-        ratio = el.opt.cHeight/h;
-        w=w*ratio;
-        h = el.opt.cHeight;
-      }
+                var $el=$(this);
+                var el=$el.get(0);
+                el.opt=$.extend({},$.zoomPan.defaults,opt);
 
 
-      var t= - Math.random()*((h-el.opt.cHeight));
-      var l= - Math.random()*((w-el.opt.cWidth));
-      var v= el.opt.velocity[0]+Math.random()*(el.opt.velocity[1]-el.opt.velocity[0]);
+                $el.load(function(){
 
-      $el.fadeTo(600,1,function(){$el.CSSAnimate({width:w, height:h, marginTop:t, marginLeft:l},v,el.opt.type,function(){$el.imagePanAnimate()});});
-    }
-  };
+                    if(el.opt.isInit) return;
 
-  $.fn.CSSAnimate=function(opt, duration, type, callback){
+                    el.opt.isInit=true;
 
-    //console.debug(opt);
+                    if($el.width()<el.opt.cWidth){
+                        var ratio = el.opt.cWidth/$el.width();
+                        $el.css({width:el.opt.cWidth,height: $el.height()*ratio});
+                    }
 
-    if(!opt) return;
+                    el.opt.oWidth=$el.width();
+                    el.opt.oHeight=$el.height();
 
-    if(typeof duration=="function"){
-      callback=duration;
-    }
-    if(typeof type=="function"){
-      callback=type;
-    }
-    if(!duration)
-      duration=1000;
+                    el.opt.cWidth=el.opt.cWidth?el.opt.cWidth:el.opt.oWidth;
+                    el.opt.cHeight=el.opt.cHeight?el.opt.cHeight:el.opt.oHeight;
 
-    if(!type)
-      type="cubic-bezier(0.65,0.03,0.36,0.72)";
+                    el.opt.cWidth=$el.data("width")?$el.data("width"):el.opt.cWidth;
+                    el.opt.cHeight=$el.data("height")?$el.data("height"):el.opt.cHeight;
 
-    //http://cssglue.com/cubic
-    //  ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(<number>, <number>, <number>, <number>)
+                    el.opt.maxScale=el.opt.maxScale-el.opt.minScale;
 
-    var el=this;
+                    $el.show().css({width:$el.width()*el.opt.startScale,height:$el.height()*el.opt.startScale, top:0, left:0});
 
-    if($.browser.msie){
-      el.animate(opt,duration,callback);
-      return;
-    }
+                    var imgWrapper=$("<div/>").addClass("zoomPanWrapper").css({overflow:"hidden", width:el.opt.cWidth,height:el.opt.cHeight, position:"static", display:el.opt.display, margin:0});
+                    $el.css({position:"static"}).wrap(imgWrapper);
+                    $el.imagePanAnimate();
 
-    var sfx="";
-    var transitionEnd = "TransitionEnd";
-    if ($.browser.webkit) {
-      sfx="-webkit-";
-      transitionEnd = "webkitTransitionEnd";
-    } else if ($.browser.mozilla) {
-      sfx="-moz-";
-      transitionEnd = "transitionend";
-    } else if ($.browser.opera) {
-      sfx="-o-";
-      transitionEnd = "oTransitionEnd";
-    }
+                }).attr("src",$el.attr("src")+"?_="+new Date().getTime()).css({opacity:0}).hide();
+            })
+        },
 
-    el.css(sfx+"transition-property","margin-top, margin-left, width, height");
-    el.css(sfx+"transition-duration",duration+"ms");
-    el.css(sfx+"transition-timing-function",type);
+        animate:function(){
+            var $el=this;
+            var el=$el.get(0);
 
-    el.css(opt);
+            var scale = random(el.opt.minScale , el.opt.maxScale);
 
-    var endTransition = function(){
-      el.css(sfx+"transition","");
-      if(typeof callback=="function")
-        callback();
-      el.get(0).removeEventListener(transitionEnd,endTransition,true);
+            var w=Math.round(el.opt.oWidth*scale);
+            var h=Math.round(el.opt.oHeight*scale);
+
+            var ratio;
+            if(w<el.opt.cWidth){
+                ratio = el.opt.cWidth/w;
+                w=el.opt.cWidth;
+                h = h*ratio;
+            }
+
+            if(h<el.opt.cHeight){
+                ratio = el.opt.cHeight/h;
+                w=w*ratio;
+                h = el.opt.cHeight;
+            }
+
+            var t= - random(h-el.opt.cHeight);
+            var l= - random(w-el.opt.cWidth);
+            var v= random(el.opt.velocity[0], el.opt.velocity[1]-el.opt.velocity[0]);
+
+            $el.fadeTo(600,1,function(){$el.CSSAnimate({width:w, height:h, marginTop:t, marginLeft:l},v,el.opt.type,"margin-top, margin-left, width, height", function(){$el.imagePanAnimate()});});
+        }
     };
-    el.get(0).addEventListener(transitionEnd, endTransition, true);
-  };
 
+    $.fn.CSSAnimate=function(opt, duration, type, properties, callback){
 
-  $.fn.zoomPan=$.zoomPan.init;
-  $.fn.imagePanAnimate=$.zoomPan.animate;
+        if(!opt) return;
+        if(typeof duration=="function"){callback=duration;}
+        if(typeof type=="function"){callback=type;}
+        if(typeof properties=="function"){callback=properties;}
+        if(!duration) duration=1000;
+        if(!type) type="cubic-bezier(0.65,0.03,0.36,0.72)";
+        if(!properties) properties="all";
+
+        //http://cssglue.com/cubic
+        //  ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(<number>, <number>, <number>, <number>)
+
+        var el=this;
+
+        console.debug(jQuery.support.transition);
+
+        if(jQuery.support.transition){
+            el.animate(opt,duration,callback);
+            return;
+        }
+
+        var sfx="";
+        var transitionEnd = "TransitionEnd";
+        if ($.browser.webkit) {
+            sfx="-webkit-";
+            transitionEnd = "webkitTransitionEnd";
+        } else if ($.browser.mozilla) {
+            sfx="-moz-";
+            transitionEnd = "transitionend";
+        } else if ($.browser.opera) {
+            sfx="-o-";
+            transitionEnd = "oTransitionEnd";
+        }
+
+        el.css(sfx+"transition-property",properties);
+        el.css(sfx+"transition-duration",duration+"ms");
+        el.css(sfx+"transition-timing-function",type);
+
+        el.css(opt);
+
+        var endTransition = function(){
+            el.css(sfx+"transition","");
+            if(typeof callback=="function")
+                callback();
+            el.get(0).removeEventListener(transitionEnd,endTransition,true);
+        };
+        el.get(0).addEventListener(transitionEnd, endTransition, true);
+    };
+
+    $.fn.zoomPan=$.zoomPan.init;
+    $.fn.imagePanAnimate=$.zoomPan.animate;
+
+    function random(from, to){
+        if(!to){
+            to=from;
+            from=0;
+        }
+        return from+Math.round(Math.random()*to);
+    }
+
+    // jQuery.support.transition
+    // to verify that CSS3 transition is supported (or any of its browser-specific implementations)
+    $.support.transition = (function(){
+        var thisBody = document.body || document.documentElement,
+            thisStyle = thisBody.style,
+            support = thisStyle.transition !== undefined || thisStyle.WebkitTransition !== undefined || thisStyle.MozTransition !== undefined || thisStyle.MsTransition !== undefined || thisStyle.OTransition !== undefined;
+        return support;
+    })();
 
 })(jQuery);
-
-function random(from, to){
-  return from+Math.round(Math.random()*to);
-}
