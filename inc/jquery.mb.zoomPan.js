@@ -104,54 +104,63 @@
         }
     };
 
-    $.fn.CSSAnimate=function(opt, duration, type, properties, callback){
+$.fn.CSSAnimate = function(opt, duration, type, properties, callback) {
+    return this.each(function() {
 
-        if(!opt) return;
-        if(typeof duration=="function"){callback=duration;}
-        if(typeof type=="function"){callback=type;}
-        if(typeof properties=="function"){callback=properties;}
-        if(!duration) duration=1000;
-        if(!type) type="cubic-bezier(0.65,0.03,0.36,0.72)";
-        if(!properties) properties="all";
+        var el = $(this);
+
+        if (el.length == 0 || !opt) return;
+
+        if (typeof duration == "function") {
+            callback = duration;
+        }
+        if (typeof type == "function") {
+            callback = type;
+        }
+        if (typeof properties == "function") {
+            callback = properties;
+        }
+        if (!duration) duration = 1000;
+        if (!type) type = "cubic-bezier(0.65,0.03,0.36,0.72)";
+        if (!properties) properties = "all";
 
         //http://cssglue.com/cubic
-        //  ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(<number>, <number>, <number>, <number>)
-
-        var el=this;
-
-        if(!jQuery.support.transition){
-            el.animate(opt,duration,callback);
+        //  ease  |  linear | ease-in | ease-out | ease-in-out  |  cubic-bezier(<number>, <number>,  <number>,  <number>)
+        if (!jQuery.support.transition) {
+            el.animate(opt, duration, callback);
             return;
         }
 
-        var sfx="";
+        var sfx = "";
         var transitionEnd = "TransitionEnd";
         if ($.browser.webkit) {
-            sfx="-webkit-";
+            sfx = "-webkit-";
             transitionEnd = "webkitTransitionEnd";
         } else if ($.browser.mozilla) {
-            sfx="-moz-";
+            sfx = "-moz-";
             transitionEnd = "transitionend";
         } else if ($.browser.opera) {
-            sfx="-o-";
+            sfx = "-o-";
             transitionEnd = "oTransitionEnd";
         }
 
-        el.css(sfx+"transition-property",properties);
-        el.css(sfx+"transition-duration",duration+"ms");
-        el.css(sfx+"transition-timing-function",type);
+        el.css(sfx + "transition-property", properties);
+        el.css(sfx + "transition-duration", duration + "ms");
+        el.css(sfx + "transition-timing-function", type);
 
-        el.css(opt);
+        setTimeout(function() {
+            el.css(opt)
+        }, 20);
 
-        var endTransition = function(){
-            el.css(sfx+"transition","");
-            if(typeof callback=="function")
-                callback();
-            el.get(0).removeEventListener(transitionEnd,endTransition,true);
+        var endTransition = function() {
+            el.css(sfx + "transition", "");
+            if (typeof callback == "function") callback();
+            el.get(0).removeEventListener(transitionEnd, endTransition, false);
         };
-        el.get(0).addEventListener(transitionEnd, endTransition, true);
-    };
+        el.get(0).addEventListener(transitionEnd, endTransition, false);
 
+    })
+};
     $.fn.zoomPan=$.zoomPan.init;
     $.fn.imagePanAnimate=$.zoomPan.animate;
 
