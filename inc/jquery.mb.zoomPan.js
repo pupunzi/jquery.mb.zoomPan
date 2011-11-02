@@ -119,9 +119,7 @@
 
         var el=this;
 
-        console.debug(jQuery.support.transition);
-
-        if(jQuery.support.transition){
+        if(!jQuery.support.transition){
             el.animate(opt,duration,callback);
             return;
         }
