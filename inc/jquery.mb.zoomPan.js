@@ -14,7 +14,7 @@
  *  http://www.opensource.org/licenses/mit-license.php
  *  http://www.gnu.org/licenses/gpl.html
  *
- *  last modified: 16/01/13 22.49
+ *  last modified: 02/07/13 21.41
  *  *****************************************************************************
  */
 
@@ -45,7 +45,6 @@
 				var $el=$(this);
 				var el=$el.get(0);
 				el.opt=$.extend({},$.zoomPan.defaults,opt);
-
 
 				$el.load(function(){
 

@@ -16,7 +16,7 @@
   ~  http://www.opensource.org/licenses/mit-license.php
   ~  http://www.gnu.org/licenses/gpl.html
   ~
-  ~  last modified: 04/01/13 17.13
+  ~  last modified: 01/10/13 22.36
   ~  ******************************************************************************/
   -->
 
@@ -46,7 +46,7 @@
         }
 
         .zoomPanWrapper{
-            border-radius:100px;
+            /*border-radius:100px;*/
         }
 
     </style>
@@ -65,12 +65,12 @@
 
         $(function(){
             $("#wrapper img").zoomPan({
-                startScale:2,
-                minScale:.1,
-                maxScale:1.5,
-                cWidth:900,
-                cHeight:200,
-                velocity:[2000,14000],
+                startScale:.5,
+                minScale:.4,
+                maxScale:.5,
+                cWidth:800,
+                cHeight:400,
+                velocity:[6000,14000],
                 type:"ease",
                 display:"inline-block"
             });
@@ -82,11 +82,12 @@
 <div id="wrapper">
     <h1>jquery.mb.imagePan demo</h1>
     <div id="demo">
-        <img src="elements/04.jpg" data-width="200" >
-        <img src="elements/04.jpg" data-width="700" >
-        <img src="elements/04.jpg" ><br>
-        <img src="elements/04.jpg" data-width="700" >
-        <img src="elements/04.jpg" data-width="200" >
+        <img src="elements/01.jpg" data-width="200" data-height="200" >
+        <img src="elements/03.jpg" data-width="200" data-height="200">
+        <img src="elements/02.jpg" data-width="200" data-height="200" ><br>
+        <img src="elements/04.jpg" data-width="200" data-height="200" >
+        <img src="elements/05.jpg" data-width="200" data-height="200" >
+        <img src="elements/06.jpg" data-width="200" data-height="200" >
     </div>
 </div>
 
