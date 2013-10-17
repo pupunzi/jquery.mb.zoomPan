@@ -16,7 +16,7 @@
   ~  http://www.opensource.org/licenses/mit-license.php
   ~  http://www.gnu.org/licenses/gpl.html
   ~
-  ~  last modified: 02/10/13 22.42
+  ~  last modified: 17/10/13 20.06
   ~  ******************************************************************************/
   -->
 
@@ -65,9 +65,9 @@
 
         $(function(){
             $("#wrapper img").zoomPan({
-                startScale:.5,
-                minScale:.4,
-                maxScale:.5,
+                startScale:10,
+                minScale:.9,
+                maxScale:1,
                 cWidth:800,
                 cHeight:400,
                 velocity:[6000,14000],
@@ -82,9 +82,9 @@
 <div id="wrapper">
     <h1>jquery.mb.imagePan demo</h1>
     <div id="demo">
-        <img src="elements/01.jpg" data-width="200" data-height="200" >
-        <img src="elements/03.jpg" data-width="200" data-height="200">
-        <img src="elements/02.jpg" data-width="200" data-height="200" ><br>
+        <img id="img1" src="elements/01.jpg" data-width="200" data-height="200" >
+        <img src="elements/03.jpg" data-width="200" data-height="200" >
+        <img src="elements/02.jpg" data-width="400" data-height="200" ><br>
         <img src="elements/04.jpg" data-width="200" data-height="200" >
         <img src="elements/05.jpg" data-width="200" data-height="200" >
         <img src="elements/06.jpg" data-width="200" data-height="200" >
